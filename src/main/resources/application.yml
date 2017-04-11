@@ -1,0 +1,63 @@
+server:
+  port: 8181
+
+hystrix:
+  threadpool.default.coreSize: 30
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000
+
+
+#如果配置错了，每次需要记录到 ZIPKIN 都会报错 -（
+spring:
+  zipkin.baseUrl: http://192.168.99.100:9411
+  sleuth:
+    enabled: true
+    sampler:
+      percentage: 1.0
+  cloud:
+    config:
+      profile: ${config.profile:docker} # profile
+      name: log_queue        # 配置文件
+
+  data:
+    mongodb:
+      host: 192.168.99.100
+      username: user
+      password: userpassword
+      database: piggymetrics
+      port: 27017
+  rabbitmq:
+    host: ${log.spring.rabbitmq.host}
+    port: ${log.spring.rabbitmq.port}
+    username: ${log.spring.rabbitmq.username}
+    password: ${log.spring.rabbitmq.password}
+
+logging.file: ${spring.application.name}.log
+#logging.level.UserService.AuthServiceClient: DEBUG
+
+
+#oauth
+security:
+  oauth2:
+    client:
+      clientId: ${spring.application.name}-id
+      clientSecret: ${spring.application.name}--secret
+      accessTokenUri: http://Localhost:5000/uaa/oauth/token
+      grantType: client_credentials
+      scope: server
+#      tokenName: oauth_token
+#      authenticationScheme: query
+#      clientAuthenticationScheme: form
+
+    resource:
+      user-info-uri: http://Localhost:5000/uaa/users/current
+#      user-info-uri: http://AUTHSERVER/uaa/users/current
+
+#  user:
+#    password: user-service_password
+#    name: user
+

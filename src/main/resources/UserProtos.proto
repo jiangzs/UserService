@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package user;
+
+option java_package = "com.jzs.user.dto";
+option java_outer_classname = "UserProtos";
+
+
+message UserDTO {
+    int32 uid = 1;
+    string mobile = 2;
+    string firstName = 3;
+    string lastName = 4;
+    string birthDay=6; // yyyy-MM-dd
+    string sex=7;
+}
+
